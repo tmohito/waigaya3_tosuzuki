@@ -25,7 +25,8 @@ namespace Waigaya3.Data
              * 不要なログが多いので、Log出力のカテゴリーを指定: DbLoggerCategory.Database.Command.Name
              * LogLevelはInfomationに設定
              */
-            optionsBuilder.UseSqlServer(builer.ConnectionString)
+            string connectionString = builer.ConnectionString;
+            optionsBuilder.UseSqlServer(connectionString)
               .LogTo(message =>
               System.Diagnostics.Debug.WriteLine(message),
               new[] { DbLoggerCategory.Database.Command.Name },
