@@ -1,10 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Waigaya3.Models;
-
-namespace Waigaya3.Controllers.Request
+﻿namespace Waigaya3.Controllers.Request.Product
 {
-    public class SaveProductRequest
+    public class SaveRequest
     {
         public int? Id { get; set; }
 

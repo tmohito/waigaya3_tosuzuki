@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Waigaya3.Controllers.Request;
-using Waigaya3.Controllers.Response;
+using Waigaya3.Controllers.Request.Product;
+using Waigaya3.Controllers.Response.Product;
 using Waigaya3.Data;
 using Waigaya3.Models;
 
@@ -36,13 +36,11 @@ namespace Waigaya3.Controllers
         [Route("product_entry/{id}")]
         public IActionResult Entry(int? id)
         {
-            Product? p = null;
-            if (id != null) 
-            {
-                 p = _context.Products.FirstOrDefault(x => x.Id == id);
-            }
+            Product? p = (id != null) 
+                ? _context.Products.FirstOrDefault(x => x.Id == id)
+                : null;
 
-            var response = new ProductEnrtyResponse
+            var response = new EntryResponse
             {
                 Product = p,
                 Categories = _context.Categories.ToList(),
@@ -58,7 +56,7 @@ namespace Waigaya3.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("upsert")]
-        public IActionResult Upsert([FromForm] SaveProductRequest request)
+        public IActionResult Upsert([FromForm] SaveRequest request)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == request.Id);
 
@@ -90,7 +88,7 @@ namespace Waigaya3.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("delete")]
-        public IActionResult Delete([FromForm] SaveProductRequest request)
+        public IActionResult Delete([FromForm] DeleteRequest request)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == request.Id);
 

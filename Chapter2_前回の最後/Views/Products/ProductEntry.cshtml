@@ -1,4 +1,4 @@
-﻿@model Waigaya3.Controllers.Response.ProductEnrtyResponse
+﻿@model Waigaya3.Controllers.Response.Product.EntryResponse;
 
 <form asp-controller="Products" asp-action="Upsert" method="post">
     <div class="container mt-5">
@@ -27,8 +27,14 @@
                 <option selected disabled value="">選択</option>
                 @foreach (var item in Model.Categories)
                 {
-                    var selectVal = Model.Product.CategoryId == item.Id ? "selected" : "";
-                    <option value="@item.Id">@item.Title</option>
+                    if (Model.Product?.CategoryId == item.Id)
+                    {
+                        <option value="@item.Id" selected>@item.Title</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Title</option>
+                    }
                 }
             </select>
         </div>
