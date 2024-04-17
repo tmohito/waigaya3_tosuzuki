@@ -65,7 +65,7 @@ namespace Waigaya3.Controllers
                 _context.Products.Add(new Product
                 {
                     Name = request.Name,
-                    Description = request.Description,
+                    Description = request.Description ?? "",
                     Price = request.Price,
                     CategoryId = request.CategoryId
                 });
@@ -73,7 +73,7 @@ namespace Waigaya3.Controllers
             else
             {
                 product.Name = request.Name;
-                product.Description = request.Description;
+                product.Description = request.Description ?? "";
                 product.Price = request.Price;
                 product.CategoryId = request.CategoryId;
             }
