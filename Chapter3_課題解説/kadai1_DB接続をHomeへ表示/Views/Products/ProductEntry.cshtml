@@ -1,0 +1,61 @@
+﻿@model Waigaya3.Controllers.Response.Product.EntryResponse;
+
+<form asp-controller="Products" asp-action="Upsert" method="post">
+    <div class="container mt-5">
+        <!-- 商品名 -->
+        <div class="mb-3">
+            <label for="areaTitle" class="form-label">商品名 <span class="required-star">*</span></label>
+            <input type="text" class="form-control" id="areaTitle" name="Name" placeholder="商品名" required value="@Model.Product?.Name">
+        </div>
+
+        <!-- 説明 -->
+        <div class="mb-3">
+            <label for="description" class="form-label">説明</label>
+            <textarea class="form-control" id="description" name="Description" rows="3" placeholder="説明">@Model.Product?.Description</textarea>
+        </div>
+
+        <!-- 金額 -->
+        <div class="mb-3">
+            <label for="amount" class="form-label">金額 <span class="required-star">*</span></label>
+            <input type="number" class="form-control" id="amount" name="Price" required value="@Model.Product?.Price">
+        </div>
+
+        <!-- カテゴリー -->
+        <div class="mb-3">
+            <label for="category" class="form-label">カテゴリー <span class="required-star">*</span></label>
+            <select class="form-select" id="CategoryId" name="CategoryId">
+                <option selected disabled value="">選択</option>
+                @foreach (var item in Model.Categories)
+                {
+                    if (Model.Product?.CategoryId == item.Id)
+                    {
+                        <option value="@item.Id" selected>@item.Title</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Title</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <!-- Idを含めて送信する -->
+        <input type="hidden" id="productId" name="Id" value="@Model.Product?.Id">
+
+        <!-- ボタン -->
+        <div class="row">
+            <div class="col-auto mb-4">
+                <button type="submit" class="btn btn-primary" asp-action="Upsert">保存</button>
+            </div>
+            <div class="col-auto mb-4">
+                <button type="button" class="btn btn-secondary" onclick="history.back();">取消</button>
+            </div>
+            @if (Model.Product?.Id != null)
+            {
+                <div class="col-auto mb-4">
+                    <button type="submit" class="btn btn-danger" asp-action="Delete">削除</button>
+                </div>
+            }
+        </div>
+    </div>
+</form>
