@@ -20,6 +20,7 @@ namespace Waigaya3.Controllers
         public IActionResult Index()
         {
             ViewBag.ConnectionString = dbContext.Database.GetConnectionString();
+            ViewBag.IsConnect = dbContext.Database.CanConnect();
             return View();
         }
 

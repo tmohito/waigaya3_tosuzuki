@@ -20,12 +20,16 @@ namespace Waigaya3.Data
             builer.InitialCatalog = "WaigayaDB1";
             builer.IntegratedSecurity = true;
 
+            string azureConnecitonString = "Server=tcp:{自分のSQLServiceを入れてね},1433;Initial Catalog=waigayadb;Persist Security Info=False;User ID=dbadmin;Password=Pacific123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
             /*
              * LogTo( Action<string> でコンソールにSQLのログを出力する
              * 不要なログが多いので、Log出力のカテゴリーを指定: DbLoggerCategory.Database.Command.Name
              * LogLevelはInfomationに設定
              */
-            string connectionString = builer.ConnectionString;
+            bool isProduction = false;  // trueならAzure, falseならlocaldb
+            string connectionString = isProduction ? 
+                azureConnecitonString : builer.ConnectionString;
             optionsBuilder.UseSqlServer(connectionString)
               .LogTo(message =>
               System.Diagnostics.Debug.WriteLine(message),
