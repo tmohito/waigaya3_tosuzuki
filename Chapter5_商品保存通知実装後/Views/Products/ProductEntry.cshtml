@@ -1,0 +1,114 @@
+﻿@model Waigaya3.Controllers.Response.Product.EntryResponse;
+
+<form>
+    <div class="container mt-5">
+        <!-- 商品名 -->
+        <div class="mb-3">
+            <label for="areaTitle" class="form-label">商品名 <span class="required-star">*</span></label>
+            <input type="text" class="form-control" id="areaTitle" name="Name" placeholder="商品名" required value="@Model.Product?.Name">
+        </div>
+
+        <!-- 説明 -->
+        <div class="mb-3">
+            <label for="description" class="form-label">説明</label>
+            <textarea class="form-control" id="description" name="Description" rows="3" placeholder="説明">@Model.Product?.Description</textarea>
+        </div>
+
+        <!-- 金額 -->
+        <div class="mb-3">
+            <label for="amount" class="form-label">金額 <span class="required-star">*</span></label>
+            <input type="number" class="form-control" id="amount" name="Price" required value="@Model.Product?.Price">
+        </div>
+
+        <!-- カテゴリー -->
+        <div class="mb-3">
+            <label for="category" class="form-label">カテゴリー <span class="required-star">*</span></label>
+            <select class="form-select" id="CategoryId" name="CategoryId">
+                <option selected disabled value="">選択</option>
+                @foreach (var item in Model.Categories)
+                {
+                    if (Model.Product?.CategoryId == item.Id)
+                    {
+                        <option value="@item.Id" selected>@item.Title</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.Title</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <!-- Idを含めて送信する -->
+        <input type="hidden" id="productId" name="Id" value="@Model.Product?.Id">
+
+        <!-- ボタン -->
+        <div class="row">
+            <div class="col-auto mb-4">
+                <button id="btnSave" type="button" class="btn btn-primary">保存</button>
+            </div>
+            <div class="col-auto mb-4">
+                <button type="button" class="btn btn-secondary" onclick="history.back();">取消</button>
+            </div>
+            @if (Model.Product?.Id != null)
+            {
+                <div class="col-auto mb-4">
+                    <button id="btnDelete" type="button" class="btn btn-danger">削除</button>
+                </div>
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $('#btnSave').on('click', function () {
+            // フォーム要素の内容を x-www-urlencorded 形式に変換
+            const datas = $('form').serialize();
+            
+            $.ajax({
+                url: '/Products/Upsert',
+                type: 'POST',
+                data: datas,
+                timeout: 5000,
+            })
+            .done(function (data) {
+                // 通信成功時の処理を記述
+                bootbox.alert('保存しました！', function () {
+                    // IDがなし（新規）の場合、新規登録画面を再度呼出
+                    if (!$("#productId").val()) {
+                        window.location.href = '/Products/product_entry/';
+                    }
+                });
+            })
+            .fail(function () {
+                // 通信失敗時の処理を記述]
+                bootbox.alert('保存失敗！');
+            });
+        });
+
+        $('#btnDelete').on('click', function () {
+            bootbox.confirm('削除しますか？', function (result) {
+                if (result) 
+                {
+                    const datas = $('form').serialize();
+
+                    $.ajax({
+                        url: '/Products/Delete',
+                        type: 'POST',
+                        data: datas,
+                        timeout: 5000,
+                    })
+                    .done(function (data) {
+                        //削除成功時に一覧画面を表示
+                        window.location.href = '/Products';
+                    })
+                    .fail(function () {
+                        // 通信失敗時の処理を記述]
+                        bootbox.alert('削除失敗！');
+                    });
+                }
+            });
+        });
+    </script>
+}

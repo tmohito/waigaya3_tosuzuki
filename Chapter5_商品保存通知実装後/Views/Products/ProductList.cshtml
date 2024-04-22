@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Waigaya3.Models.Product>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+</head>
+
+<body>
+    <a class="btn btn-primary" asp-action="Entry">
+        追加
+    </a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>名前</th>
+                <th>説明</th>
+                <th>価格</th>
+                <th>カテゴリ</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@item.Price.ToString("C")</td>
+                    <td>@item.Category?.Title</td>
+                    <td style="white-space: nowrap;">
+                        <a asp-controller="Products" asp-action="Entry" asp-route-id="@item.Id">
+                            <i class="las la-edit la-2x"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
